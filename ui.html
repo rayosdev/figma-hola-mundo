@@ -1,0 +1,67 @@
+
+<div class="container" id="app">
+  <h2>Get All Fonts</h2>
+  <button @click="reload">Refresh Data</button>
+  <ul>
+    <li v-for="(item, index) in payload.fonts" :key="index">
+        {{ item.name }}: {{ item.fontObj.family }} {{ item.fontObj.style }}
+    </li>
+  </ul>
+</div>
+<!-- <p>Count: <input id="count" value="5"></p>
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+<button id="traverse">Traverse</button> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+let app = new Vue({
+  el: '#app',
+  data: {
+    payload: ""
+  },
+  methods: {
+    reload(){
+      parent.postMessage({ pluginMessage: { type: 'reload' } }, '*')
+    }
+  },
+})
+
+
+
+// document.getElementById('create').onclick = () => {
+//   const textbox = document.getElementById('count');
+//   const count = parseInt(textbox.value, 10);
+//   parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+// }
+
+// document.getElementById('cancel').onclick = () => {
+//   parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+//   console.log(parent)
+// }
+// document.getElementById('traverse').onclick = () => {
+//   parent.postMessage({ pluginMessage: { type: 'traverse' } }, '*')
+// }
+
+window.addEventListener('load', e =>{
+  parent.postMessage({ pluginMessage: { type: 'traverse' } }, '*')
+})
+
+onmessage = (event) => {
+  const data = event.data.pluginMessage
+  if(data.type === 'info'){
+    app.payload = data.payload
+  }
+}
+
+</script>
+
+<style>
+
+body {
+  font-family: Roboto;
+}
+
+
+</style>
